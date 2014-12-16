@@ -3,27 +3,20 @@
 
 ## Loading and preprocessing the data
 
-```r
-setwd("D:/Coursera/Reproducible Research/Project 1/")
-library('plyr')
-```
-
 ```
 ## Warning: package 'plyr' was built under R version 3.0.3
-```
-
-```r
-library('ggplot2')
 ```
 
 ```
 ## Warning: package 'ggplot2' was built under R version 3.0.3
 ```
 
+
 ```r
-df <- read.csv("activity.csv")
+df <-  read.csv(unzip(zipfile = "activity.zip"))
 df$date <- as.Date(df$date)
 ```
+
 
 
 ## What is mean total number of steps taken per day?
@@ -33,7 +26,7 @@ sumDf <- ddply(df,.(date),summarize, sum=sum(steps))
 plot(sumDf, xlab='Date',ylab='Steps Taken',type='h')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 
 ## Mean and the median total number of steps taken per day
@@ -65,7 +58,7 @@ timeSeries <- ddply(df,.(interval),summarize,mean=mean(steps,na.rm = TRUE))
 plot(timeSeries,type='l',ylab='Steps Taken')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 
 ## Interval with highest number of steps
@@ -83,7 +76,7 @@ timeSeries[which.max(timeSeries$mean),1]
 
 ## Imputing missing values
 
-1. Number of Missing values 
+- Number of Missing values 
 
 
 ```r
@@ -95,7 +88,7 @@ sum(is.na(df$steps))
 ```
 
 
-2. Filling in all the missing values
+- Filling in all the missing values
 
 
 
@@ -105,7 +98,7 @@ df2 <- merge(df,meanDf,by="interval",sort = TRUE)
 ```
 
 
-3. Create a new Dataset with missing value filled in
+- Create a new Dataset with missing value filled in
 
 
 
@@ -116,7 +109,7 @@ df2 <- df2[,c("steps","date","interval")]
 ```
 
 
-4. New Histogram and Mean & Median
+- New Histogram and Mean & Median
 
 
 
@@ -125,7 +118,7 @@ histDf <- ddply(df2,.(date),summarize, sum=sum(steps))
 plot(histDf,xlab="Date", ylab="Steps Taken",type="h")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
 
 ```r
 mean(df2$steps)
@@ -145,7 +138,7 @@ median(df2$steps)
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-1. Creating a factor variable "daytype"
+- Creating a factor variable "daytype"
 
 
 ```r
@@ -153,7 +146,7 @@ df2$daytype <- ifelse((weekdays(df2$date, abbreviate = FALSE)) %in% c("Saturday"
 ```
 
 
-2. Make a panel plot containing a time series plot 
+- Make a panel plot containing a time series plot 
 
 
 
@@ -162,4 +155,4 @@ aggDf <- ddply(df2,.(daytype,interval),summarize,avg = mean(steps))
 qplot(interval,avg,data = aggDf, facets= daytype~.,geom = "line", xlab = "Interval", ylab = "Steps Taken")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
