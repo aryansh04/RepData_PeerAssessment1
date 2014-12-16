@@ -7,13 +7,16 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r}
-setwd("D:/Coursera/Reproducible Research/Project 1/")
+```{r echo=FALSE, results='hide'}
 library('plyr')
 library('ggplot2')
-df <- read.csv("activity.csv")
+```
+
+```{r}
+df <-  read.csv(unzip(zipfile = "activity.zip"))
 df$date <- as.Date(df$date)
 ```
+
 
 
 ## What is mean total number of steps taken per day?
@@ -50,14 +53,14 @@ timeSeries[which.max(timeSeries$mean),1]
 
 ## Imputing missing values
 
-1. Number of Missing values 
+- Number of Missing values 
 
 ```{r}
 sum(is.na(df$steps))
 ```
 
 
-2. Filling in all the missing values
+- Filling in all the missing values
 
 
 ```{r}
@@ -66,7 +69,7 @@ df2 <- merge(df,meanDf,by="interval",sort = TRUE)
 ```
 
 
-3. Create a new Dataset with missing value filled in
+- Create a new Dataset with missing value filled in
 
 
 ```{r}
@@ -76,7 +79,7 @@ df2 <- df2[,c("steps","date","interval")]
 ```
 
 
-4. New Histogram and Mean & Median
+- New Histogram and Mean & Median
 
 
 ```{r}
@@ -88,14 +91,14 @@ median(df2$steps)
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-1. Creating a factor variable "daytype"
+- Creating a factor variable "daytype"
 
 ```{r}
 df2$daytype <- ifelse((weekdays(df2$date, abbreviate = FALSE)) %in% c("Saturday","Sunday"), "weekend","weekday")
 ```
 
 
-2. Make a panel plot containing a time series plot 
+- Make a panel plot containing a time series plot 
 
 
 ```{r}
